@@ -1,5 +1,6 @@
-import { Termo } from './termo.js';
-import { Cor } from './termo.js';
+import { Termo } from './dominio/termo';
+import { Cor } from './dominio/termo';
+import "./css/styles.css";
 
 class TelaTermo {
   pnlTeclado: HTMLButtonElement;
@@ -52,6 +53,11 @@ class TelaTermo {
       tecla.disabled = false;
     });
 
+    this.recomecarQuadro();
+    this.recomecarTeclado();
+  }
+
+  recomecarQuadro(): void{
     let pnlTermo = document.getElementById("pnlTermo") as HTMLDivElement;
     for(let i = 0; i < pnlTermo.children.length; i++){
       const linha = pnlTermo.children.item(i) as HTMLDivElement;
@@ -60,6 +66,14 @@ class TelaTermo {
         coluna.textContent = "";
         coluna.style.backgroundColor = "#c09f7dbe";
       }
+    }
+  }
+
+  recomecarTeclado(): void{
+    let teclado = document.getElementById("pnlTeclado") as HTMLDivElement;
+    for(let i = 0; i < teclado.children.length; i++){
+      const btn = teclado.children.item(i) as HTMLButtonElement;
+      btn.style.backgroundColor = "#fcebd9be";
     }
   }
 
@@ -73,6 +87,11 @@ class TelaTermo {
 
   capturarTecla(sender: MouseEvent){
     let btn = sender.target as HTMLButtonElement;
+
+    if(btn.textContent != 'Enter' && this.indiceColuna != 5){
+      btn.style.backgroundColor = "#36322ed2";
+    }
+
     let txtTecla: string = btn.textContent as string;
     //console.log(txtTecla);
     this.adicionarTextoAoQuadro(txtTecla);
@@ -86,12 +105,17 @@ class TelaTermo {
     this.txtF.hidden = false;
   }
 
-  criarSpan(txtFinal: string, corFinal: string){
+  criarSpan(txtFinal: string, acertou: boolean){
     const novoTexto = document.createElement('span');
     novoTexto.id = "txtFinal";  
     novoTexto.textContent = txtFinal;
-    novoTexto.style.fontWeight = "bold";
-    novoTexto.style.color = corFinal;
+
+    if(acertou){
+      novoTexto.classList.add("msgAcertou")
+    }
+    else{
+      novoTexto.classList.add("msgErrou")
+    }
 
     this.divTxt.appendChild(novoTexto);
   }
@@ -104,15 +128,13 @@ class TelaTermo {
 
     if(estaCorreto){
       txtFinal = "Parabens você acertou!";
-      corFinal = "#012401";
       this.desabilitarTeclado();
-      this.criarSpan(txtFinal, corFinal);
+      this.criarSpan(txtFinal, true);
     }
     else if (estaCorreto == false && this.indiceLinha == 4) {
-      txtFinal = "Infelizmente você perdeu!";
-      corFinal = "red";
+      txtFinal = "Infelizmente você perdeu. A palavra sorteada era: " + this.termo.palavraSorteada;
       this.desabilitarTeclado();
-      this.criarSpan(txtFinal, corFinal);
+      this.criarSpan(txtFinal, false);
     }
   }
 

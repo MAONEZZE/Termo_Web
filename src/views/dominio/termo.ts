@@ -77,7 +77,7 @@ export class Termo{
 
     let i = Math.floor(Math.random() * arrayPalavras.length);
     this.palavraSorteada = this.removerAcentos(arrayPalavras[i]);
-		console.log(this.palavraSorteada);
+		//console.log(this.palavraSorteada);
   }
 }
 export enum Cor{ verde, amarelo, nada }

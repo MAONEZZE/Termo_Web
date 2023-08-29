@@ -98,3 +98,17 @@ body{
 
   font-weight: 800;
 }
+
+.msgAcertou{
+  color: rgb(10, 83, 0);
+  border: solid 1px;
+  border-radius: 2px;
+  font-weight: 800;
+}
+
+.msgErrou{
+  color: rgb(128, 8, 8);
+  border: solid 1px;
+  border-radius: 2px;
+  font-weight: 800;
+}
